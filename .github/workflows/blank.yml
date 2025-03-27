@@ -1,7 +1,7 @@
 name: Update README and create PR
 
 on:
-  workflow_dispatch:  # You can also use `push` or a cron schedule
+  workflow_dispatch:
 
 jobs:
   update-readme:
@@ -11,16 +11,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Get timestamp
+        id: vars
+        run: echo "timestamp=$(date +%s)" >> "$GITHUB_OUTPUT"
+
       - name: Modify README
         run: |
           echo "### Updated on $(date)" >> README.md
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update README with timestamp"
           title: "Update README with latest timestamp"
           body: |
             This PR updates the `README.md` file with the latest timestamp.
-          branch: update-readme-$(date +%s)
+          branch: update-readme-${{ steps.vars.outputs.timestamp }}
