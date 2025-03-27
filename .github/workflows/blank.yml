@@ -3,6 +3,10 @@ name: Update README and create PR
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+  
 jobs:
   update-readme:
     runs-on: ubuntu-latest
